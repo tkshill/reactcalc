@@ -2,18 +2,22 @@ import "./styles.css";
 import React from "react";
 import ReactReconciler from "react-reconciler";
 
-type CalculatorComponentType =
-  | "addition"
-  | "subtraction"
-  | "multiplication"
-  | "division"
-  | "operand";
+type OperatorType = "addition" | "subtraction" | "multiplication" | "division";
+type CalculatorComponentType = OperatorType | "operand";
+
+type Expression =
+  | number
+  | {
+      operator: OperatorType;
+      leftoperand: Expression;
+      rightOperand: Expression;
+    };
 
 type OperatorProp = { children: any };
 
 type OperandProp = { value: number };
 
-const Addition = (props: OperatorProp): JSX.Element => {
+const Addition = (props: OperatorProp) => {
   console.log(React.createElement("addition", null, props.children));
   return React.createElement("addition", null, props.children);
 };
@@ -27,7 +31,7 @@ const Multiplication = (props: OperatorProp) =>
 const Division = (props: OperatorProp) =>
   React.createElement("division", null, props.children);
 
-const Operand = (props: OperandProp): JSX.Element =>
+const Operand = (props: OperandProp) =>
   React.createElement("operand", props.value, []);
 
 const AppComponent = () => (
