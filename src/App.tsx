@@ -7,11 +7,6 @@ const AppComponent = () => (
   </div>
 );
 
-console.log(
-  <div>
-    <h1></h1>
-  </div>
-);
 export default function App() {
   return <AppComponent />;
 }
