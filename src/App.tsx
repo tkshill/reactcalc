@@ -13,8 +13,10 @@ type OperatorProp = { children: any };
 
 type OperandProp = { value: number };
 
-const Addition = (props: OperatorProp) =>
-  React.createElement("addition", null, props.children);
+const Addition = (props: OperatorProp): JSX.Element => {
+  console.log(React.createElement("addition", null, props.children));
+  return React.createElement("addition", null, props.children);
+};
 
 const Subtraction = (props: OperatorProp) =>
   React.createElement("subtraction", null, props.children);
@@ -25,7 +27,7 @@ const Multiplication = (props: OperatorProp) =>
 const Division = (props: OperatorProp) =>
   React.createElement("division", null, props.children);
 
-const Operand = (props: OperandProp) =>
+const Operand = (props: OperandProp): JSX.Element =>
   React.createElement("operand", props.value, []);
 
 const AppComponent = () => (
