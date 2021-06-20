@@ -13,6 +13,10 @@ type Expression =
       rightOperand: Expression;
     };
 
+type Result = number;
+
+export const initialResult: Result = 0;
+
 type OperatorProp = { children: any };
 
 type OperandProp = { value: number };
@@ -41,6 +45,9 @@ const AppComponent = () => (
   </Addition>
 );
 
-export default function App() {
+export const render = (app: React.ReactNode, resultContext: Result): void =>
+  console.log(resultContext);
+
+export function App() {
   return <AppComponent />;
 }
