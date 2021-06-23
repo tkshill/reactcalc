@@ -9,8 +9,8 @@ type Expression =
   | number
   | {
       operator: OperatorType;
-      leftoperand: Expression;
-      rightOperand: Expression;
+      leftoperand: Expression | "Unset";
+      rightOperand: Expression | "Unset";
     };
 
 type Result = number;
@@ -45,22 +45,21 @@ const AppComponent = () => (
   </Addition>
 );
 
-type Instance = any;
-type TextInstance = any;
 type HostContext = any;
-type PublicInstance = any;
+type PublicExpression = any;
 type TimeoutHandle = any;
 type NoTimeout = any;
+type Props = any;
 
 const expressionReconciler = ReactReconciler({
-  supportsMutation: false,
+  supportsMutation: true,
   supportsPersistence: false,
   isPrimaryRenderer: false,
   supportsHydration: false,
   now() {
     return Date.now();
   },
-  getPublicInstance(instance: Instance | TextInstance): PublicInstance {},
+  getPublicExpression(Expression: Expression): any {},
   getRootHostContext(param: any) {
     return null;
   },
@@ -69,53 +68,83 @@ const expressionReconciler = ReactReconciler({
     return null;
   },
   resetAfterCommit(param: any) {},
-  createInstance(
-    type,
-    props,
-    rootContainer,
-    hostContext,
-    internalHandler
-  ): Instance {},
-  createTextInstance(
-    text,
-    rootContainer,
-    hostContainer,
-    internalHandler
-  ): TextInstance {},
-  appendInitialChild(
-    parentInstance: Instance,
-    child: Instance | TextInstance
+  createExpression(
+    type: string,
+    props: Props,
+    rootContainer: any,
+    hostContext: Result,
+    internalHandler: any
+  ): Expression {
+    switch (type) {
+      case "addition":
+        return {
+          operator: "addition",
+          leftoperand: "Unset",
+          rightOperand: "Unset"
+        };
+      case "substraction":
+        return {
+          operator: "addition",
+          leftoperand: "Unset",
+          rightOperand: "Unset"
+        };
+      case "multiplication":
+        return {
+          operator: "addition",
+          leftoperand: "Unset",
+          rightOperand: "Unset"
+        };
+      case "division":
+        return {
+          operator: "addition",
+          leftoperand: "Unset",
+          rightOperand: "Unset"
+        };
+      case "operand":
+        return props!.value;
+      default:
+        throw Error;
+    }
+  },
+  createTextExpression(
+    text: any,
+    rootContainer: any,
+    hostContainer: any,
+    internalHandler: any
   ) {},
-  finalizeInitialChildren(instance, type, props, rootContainer, hostContext) {
+
+  appendChild(parent: Expression, child: Expression) {},
+  appendInitialChild(parentExpression: Expression, child: Expression) {},
+  appendChildToContainer(container, child) {},
+  finalizeInitialChildren(Expression, type, props, rootContainer, hostContext) {
     return false;
   },
-  prepareUpdate(instance, type, oldProps, newProps, rootContainer) {
+  prepareUpdate(Expression, type, oldProps, newProps, rootContainer) {
     return null;
   },
   shouldSetTextContent(type, props) {
     return false;
   },
-  appendChildToContainer(container, child) {},
-  appendChild(parent, child) {},
+
   commitTextUpdate(text, oldText, newText) {},
-  commitMount(instance, type, newProps, internalInstanceHandle) {},
+  commitMount(Expression, type, newProps, internalExpressionHandle) {},
   replaceContainerChildren(container: any, newChildren: any) {},
-  resetTextContent(instance) {},
+  resetTextContent(Expression) {},
   commitUpdate(
-    instance,
+    Expression,
     updatePayload,
     type,
     oldProps,
     newProps,
-    internalInstanceHandle
+    internalExpressionHandle
   ) {},
-  insertBefore(parentInstance, child, beforeChild) {},
+  insertBefore(parentExpression, child, beforeChild) {},
   insertInContainerBefore(container, child, beforeChild) {},
-  removeChild(parentInstance, child) {},
+  removeChild(parentExpression, child) {},
   removeChildFromContainer(container, child) {},
-  hideInstance(instance) {},
-  unhideInstance(instance, props) {},
-  unhideTextInstance(instance, text) {},
+  hideExpression(Instance: any) {},
+  unhideExpression(Instance: any, props: any) {},
+  unhideTextExpression(Instance: any, text: any) {},
   scheduleTimeout(fn) {},
   preparePortalMount(containerInfo) {},
   cancelTimeout(id) {},
@@ -125,6 +154,7 @@ const expressionReconciler = ReactReconciler({
 
 export const render = (app: React.ReactNode, resultContext: Result): void =>
   console.log(resultContext);
+//expressionReconciler.createContainer(resultContext)
 
 export function App() {
   return <AppComponent />;
