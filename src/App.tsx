@@ -42,7 +42,7 @@ const AppComponent = () => (
   <Addition>
     <Operand value={4} />
     <Operand value={7} />
-  </Addition>
+  </Addition> //(add 4 7)
 );
 
 type HostContext = any;
@@ -59,7 +59,7 @@ const expressionReconciler = ReactReconciler({
   now() {
     return Date.now();
   },
-  getPublicExpression(Expression: Expression): any {},
+  getPublicInstance(param) {},
   getRootHostContext(param: any) {
     return null;
   },
@@ -68,7 +68,7 @@ const expressionReconciler = ReactReconciler({
     return null;
   },
   resetAfterCommit(param: any) {},
-  createExpression(
+  createInstance(
     type: string,
     props: Props,
     rootContainer: any,
@@ -106,7 +106,7 @@ const expressionReconciler = ReactReconciler({
         throw Error;
     }
   },
-  createTextExpression(
+  createTextInstance(
     text: any,
     rootContainer: any,
     hostContainer: any,
@@ -142,9 +142,9 @@ const expressionReconciler = ReactReconciler({
   insertInContainerBefore(container, child, beforeChild) {},
   removeChild(parentExpression, child) {},
   removeChildFromContainer(container, child) {},
-  hideExpression(Instance: any) {},
-  unhideExpression(Instance: any, props: any) {},
-  unhideTextExpression(Instance: any, text: any) {},
+  hideInstance(Instance: any) {},
+  unhideInstance(Instance: any, props: any) {},
+  unhideTextInstance(Instance: any, text: any) {},
   scheduleTimeout(fn) {},
   preparePortalMount(containerInfo) {},
   cancelTimeout(id) {},
@@ -154,8 +154,20 @@ const expressionReconciler = ReactReconciler({
 
 export const render = (app: React.ReactNode, resultContext: Result): void =>
   console.log(resultContext);
-//expressionReconciler.createContainer(resultContext)
+  //expressionReconciler.createContainer(resultContext)
 
 export function App() {
   return <AppComponent />;
 }
+
+
+const satement = ()=>{
+  return (
+    <Statement>
+<Add addend={3}/>
+<Parentheses><Multiploy factor={4.2}/>
+
+    </Statement>
+  )
+}
+
