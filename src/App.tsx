@@ -2,47 +2,24 @@ import "./styles.css";
 import React from "react";
 import ReactReconciler from "react-reconciler";
 
-type OperatorType = "addition" | "subtraction" | "multiplication" | "division";
-type CalculatorComponentType = OperatorType | "operand";
-
-type Expression =
-  | number
-  | {
-      operator: OperatorType;
-      leftoperand: Expression | "Unset";
-      rightOperand: Expression | "Unset";
-    };
-
 type Result = number;
+
+type Expression = (operand: number) => Result;
 
 export const initialResult: Result = 0;
 
-type OperatorProp = { children: any };
+type OperatorProp = { value: number; children?: any };
 
-type OperandProp = { value: number };
-
-const Addition = (props: OperatorProp) => {
-  console.log(React.createElement("addition", null, props.children));
-  return React.createElement("addition", null, props.children);
-};
-
-const Subtraction = (props: OperatorProp) =>
-  React.createElement("subtraction", null, props.children);
+const Addition = (props: OperatorProp) =>
+  React.createElement("addition", props.value, props.children);
 
 const Multiplication = (props: OperatorProp) =>
-  React.createElement("multiplication", null, props.children);
-
-const Division = (props: OperatorProp) =>
-  React.createElement("division", null, props.children);
-
-const Operand = (props: OperandProp) =>
-  React.createElement("operand", props.value, []);
+  React.createElement("multiplication", props.value, props.children);
 
 const AppComponent = () => (
-  <Addition>
-    <Operand value={4} />
-    <Operand value={7} />
-  </Addition> //(add 4 7)
+  <Addition value={4}>
+    <Multiplication value={5} />
+  </Addition>
 );
 
 type HostContext = any;
@@ -77,31 +54,13 @@ const expressionReconciler = ReactReconciler({
   ): Expression {
     switch (type) {
       case "addition":
-        return {
-          operator: "addition",
-          leftoperand: "Unset",
-          rightOperand: "Unset"
-        };
+        return (x: number) => props.value + x;
       case "substraction":
-        return {
-          operator: "addition",
-          leftoperand: "Unset",
-          rightOperand: "Unset"
-        };
+        return (x: number) => props.value - x;
       case "multiplication":
-        return {
-          operator: "addition",
-          leftoperand: "Unset",
-          rightOperand: "Unset"
-        };
+        return (x: number) => props.value * x;
       case "division":
-        return {
-          operator: "addition",
-          leftoperand: "Unset",
-          rightOperand: "Unset"
-        };
-      case "operand":
-        return props!.value;
+        return (x: number) => props.value / x;
       default:
         throw Error;
     }
@@ -113,13 +72,15 @@ const expressionReconciler = ReactReconciler({
     internalHandler: any
   ) {},
 
-  appendChild(parent: Expression, child: Expression) {},
-  appendInitialChild(parentExpression: Expression, child: Expression) {},
+  appendChild(parent: Result, child: Expression) {
+    parent = child(parent);
+  },
+  appendInitialChild(parentExpression, child) {},
   appendChildToContainer(container, child) {},
-  finalizeInitialChildren(Expression, type, props, rootContainer, hostContext) {
+  finalizeInitialChildren(expression, type, props, rootContainer, hostContext) {
     return false;
   },
-  prepareUpdate(Expression, type, oldProps, newProps, rootContainer) {
+  prepareUpdate(expression, type, oldProps, newProps, rootContainer) {
     return null;
   },
   shouldSetTextContent(type, props) {
@@ -127,11 +88,11 @@ const expressionReconciler = ReactReconciler({
   },
 
   commitTextUpdate(text, oldText, newText) {},
-  commitMount(Expression, type, newProps, internalExpressionHandle) {},
+  commitMount(expression, type, newProps, internalExpressionHandle) {},
   replaceContainerChildren(container: any, newChildren: any) {},
-  resetTextContent(Expression) {},
+  resetTextContent(expression) {},
   commitUpdate(
-    Expression,
+    expression,
     updatePayload,
     type,
     oldProps,
@@ -153,21 +114,8 @@ const expressionReconciler = ReactReconciler({
 });
 
 export const render = (app: React.ReactNode, resultContext: Result): void =>
-  console.log(resultContext);
-  //expressionReconciler.createContainer(resultContext)
+  expressionReconciler.createContainer(resultContext, app, false, false);
 
 export function App() {
   return <AppComponent />;
 }
-
-
-const satement = ()=>{
-  return (
-    <Statement>
-<Add addend={3}/>
-<Parentheses><Multiploy factor={4.2}/>
-
-    </Statement>
-  )
-}
-
