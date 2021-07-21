@@ -75,8 +75,12 @@ const expressionReconciler = ReactReconciler({
   appendChild(parent: Result, child: Expression) {
     parent = child(parent);
   },
-  appendInitialChild(parentExpression, child) {},
-  appendChildToContainer(container, child) {},
+  appendInitialChild(parentExpression: Result, child: Expression) {
+    parentExpression = child(parentExpression);
+  },
+  appendChildToContainer(container: Result, child: Expression) {
+    container = child(container);
+  },
   finalizeInitialChildren(expression, type, props, rootContainer, hostContext) {
     return false;
   },
@@ -114,7 +118,7 @@ const expressionReconciler = ReactReconciler({
 });
 
 export const render = (app: React.ReactNode, resultContext: Result): void =>
-  expressionReconciler.createContainer(resultContext, app, false, false);
+  expressionReconciler.createContainer(resultContext);
 
 export function App() {
   return <AppComponent />;
